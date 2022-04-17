@@ -42,7 +42,7 @@ export const Chat = ( { context } ) => {
                         </div>
                         );
                     })
-                }           
+                }
             </ul>
         </div>
         <div className="input-container">

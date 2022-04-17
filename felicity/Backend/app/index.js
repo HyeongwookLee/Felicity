@@ -220,7 +220,6 @@ io.on("connection", async socket => {
     });
 
     socket.on("chat", ({ userToCall, name, msg, time }) => {
-        // const { name, msg, time } = data;
         io.to(userToCall).emit("chatting", {
             name,
             msg,

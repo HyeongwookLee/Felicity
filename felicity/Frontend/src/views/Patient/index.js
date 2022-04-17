@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useContext } from "react"
 import Header from '../../Components/Header/Header';
 import { Mostouter, Directory, User, Cat, Title, Video } from '../../Components/mostouter';
 import Path from '../../Components/Path';
@@ -19,12 +19,16 @@ import PatientRecord from "../../Components/PatientRecord";
 import RecentPrescription from "../../Components/RecentPrescription";
 import Axios from "axios";
 import UserRedirect from "../UserRedirect"
+import { SocketContext } from "../../API/video";
 
 import API_URL from "../../API/server-ip";
 
 function Patient() {
 
     const jwt = JSON.parse(sessionStorage.getItem("jwt"))
+
+    const { myVideo, role, startCall, callUser, answerCall, userVideo, callAccepted, callEnded, stream, call, isClicked, text, getAudio, stopAudio, chatArr, send } = useContext(SocketContext);
+    const context = { myVideo, role, startCall, callUser, answerCall, userVideo, callAccepted, callEnded, stream, call, isClicked, text, getAudio, stopAudio, chatArr, send }
 
     const [scheduleData, setScheduleData] = React.useState([])
 
@@ -73,7 +77,7 @@ function Patient() {
                     </PrescriptionBox>
 
                     <ConversationBox>
-                        <Conversations />
+                        <Conversations context={context}/>
                     </ConversationBox>
                 </ContentLayout>
             </Video>

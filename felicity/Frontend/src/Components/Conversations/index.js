@@ -1,5 +1,7 @@
+import React, { useRef, useState, useEffect } from 'react';
 import { propTypes } from "react-bootstrap/esm/Image";
-import { Container, ConversationContainer, ConversationList, Header, IconArea, InfoArea, PhotoArea, Preview, ReplyBtn, Username } from "./styles";
+import { Container, HeaderContainer, ConversationContainer, ConversationList, ChattingContainer, BackBtn, Header, AddChatRoom, IconArea, InfoArea, PhotoArea, Preview, ReplyBtn, Username } from "./styles";
+import Chat from "../Chat";
 
 const Data = [
   {
@@ -7,57 +9,30 @@ const Data = [
     img: "",
     username: "Dr.Lee",
     preview: "Hi! I need more\ninformations...",
-  },
-  {
-    id: 2,
-    img: "",
-    username: "Dr.Esra",
-    preview: "Can you change...",
-  },
-  {
-    id: 2,
-    img: "",
-    username: "Dr.Esra",
-    preview: "Can you change...",
-  },
-  {
-    id: 2,
-    img: "",
-    username: "Dr.Esra",
-    preview: "Can you change...",
-  },
-  {
-    id: 2,
-    img: "",
-    username: "Dr.Esra",
-    preview: "Can you change...",
-  },
-  {
-    id: 2,
-    img: "",
-    username: "Dr.Esra",
-    preview: "Can you change...",
-  },
-  {
-    id: 2,
-    img: "",
-    username: "Dr.Esra",
-    preview: "Can you change...",
-  },
-  {
-    id: 2,
-    img: "",
-    username: "Dr.Esra",
-    preview: "Can you change...",
-  },
+  }
 ];
 
-export const Conversations = () => {
+export const Conversations = ({ context }) => {
+  const [isChatting, setIsChatting] = useState(false);
+  
+  const handleBtnClk = () => {
+    setIsChatting(!isChatting);
+  }
+  
   return (
     <Container>
-      <Header>Conversations</Header>
+      <HeaderContainer>
+        <Header>Conversations</Header>
+        <AddChatRoom></AddChatRoom>
+      </HeaderContainer>
       <ConversationList>
-        {Data.map((data) => (
+        {isChatting ? 
+        <ChattingContainer>
+          <Chat context={context}/>
+          <BackBtn onClick={handleBtnClk}>Back</BackBtn>
+        </ChattingContainer>
+        : 
+        Data.map((data) => (
           <ConversationContainer>
             <PhotoArea img = {data.img}/>
             <InfoArea>
@@ -65,7 +40,7 @@ export const Conversations = () => {
               <Preview>{data.preview}</Preview>
             </InfoArea>
             <IconArea>
-              <ReplyBtn to={`./Chatting`}>REPLY</ReplyBtn>
+              <ReplyBtn onClick={handleBtnClk}>REPLY</ReplyBtn>
             </IconArea>
           </ConversationContainer>
         ))}
