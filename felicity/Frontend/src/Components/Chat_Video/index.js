@@ -1,10 +1,13 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
+import { SocketContext } from '../../API/video'
 import './index.css';
 
-export const Chat = ( { context } ) => {
-    const { myVideo, role, startCall, callUser, answerCall, userVideo, callAccepted, callEnded, stream, call, isClicked, text, getAudio, stopAudio, chatArr, send } = context;
 
-    const nickname = useRef(null);
+export const Chat_Video = () => {
+    const { send, chatArr } = useContext(SocketContext);
+
+    const myName = JSON.parse(sessionStorage.getItem("name"))
+
     const message = useRef(null);
     const chatList = useRef(null);
     const displayContainer = useRef(null);
@@ -16,21 +19,18 @@ export const Chat = ( { context } ) => {
 
     const handleKeyDown = (e) => {
         if (e.keyCode === 13) {
-            send(nickname.current.value, message.current.value);
+            send(message.current.value);
+            console.log(myName);
         }
     }
 
     return (
     <div className="wrapper">
-        <div className="user-container">
-            <label for="nickname">이름</label>
-            <input ref={nickname} type="text" id="nickname"></input>
-        </div>
         <div ref={displayContainer} className="display-container">
             <ul ref={chatList} className="chatting-list">
                 {chatArr.map((item, index) => {
                     return(
-                        <div key={index} className={item.name === nickname.current.value ? "sent" : "received"}>
+                        <div key={index} className={item.name === myName ? "sent" : "received"}>
                             <span className="profile">
                                 <span className="user">{item.name}</span>
                                 {/* <img className="image" src="https://i.imgur.com/mNJWYVi.png" alt="any"></img> */}
@@ -48,7 +48,7 @@ export const Chat = ( { context } ) => {
         <div className="input-container">
             <span>
                 <input ref={message} type="text" className="chatting-input" onKeyDown={handleKeyDown} placeholder='enter your message'></input>
-                <button onClick={() => send(nickname.current.value, message.current.value)}
+                <button onClick={() => send(message.current.value)}
                 className="send-button" 
                 value={""}>Send</button>
             </span>
@@ -57,4 +57,4 @@ export const Chat = ( { context } ) => {
     )
 }
 
-export default Chat
+export default Chat_Video

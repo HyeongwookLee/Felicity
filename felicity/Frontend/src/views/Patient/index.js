@@ -30,10 +30,12 @@ function Patient() {
 
     const jwt = JSON.parse(sessionStorage.getItem("jwt"))
     const show = JSON.parse(sessionStorage.getItem("show"))
+    const [convIdData, setConvIdData] = React.useState([]);
+    const [doctorIdData, setDoctorIdData] = React.useState([]);
     const [scheduleData, setScheduleData] = React.useState([])
     const [visible, setVisible] = useState(true)
 
-    const { startCall } = useContext(SocketContext);
+    const { startCall, send } = useContext(SocketContext);
 
     React.useEffect(() => {
         Axios.post(`${API_URL}/patient_schedule`, { "patient_id": jwt })
@@ -41,7 +43,18 @@ function Patient() {
                 setScheduleData(response.data)
             })
     }, [])
-    console.log(scheduleData)
+    console.log(scheduleData);
+
+    React.useEffect(() => {
+        Axios.post(`${API_URL}/patient_conv`, { "patient_id": jwt })
+            .then((response) => {
+                setConvIdData(response.data[0].convId);
+                setDoctorIdData(response.data[0].doctorIds);
+            })
+    }, [])
+    console.log(convIdData);
+    console.log(doctorIdData);
+
 
     function CloseSession() {
         window.sessionStorage.removeItem('show');
@@ -92,7 +105,7 @@ function Patient() {
                     </PrescriptionBox>
 
                     <ConversationBox>
-                        <Conversations />
+                        <Conversations/>
                     </ConversationBox>
                 </ContentLayout>
             </Video>

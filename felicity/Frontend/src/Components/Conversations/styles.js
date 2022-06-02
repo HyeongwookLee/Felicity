@@ -14,6 +14,12 @@ export const Container = styled.div`
   border-radius: 20px;
 `;
 
+export const HeaderContainer = styled.div`  
+  width: 100%;
+  height: 50px;
+  display: flex;
+`;
+
 export const Header = styled.p`
   margin-top: 20px;
   margin-bottom: 20px;
@@ -21,15 +27,25 @@ export const Header = styled.p`
   font-size:20px;
 `;
 
+export const AddChatRoom = styled.button`
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-right: 5%;
+  margin-left: auto;
+  width: 20px;
+  height: 20px;
+  border-radius: 7px;
+`;
+
 export const ConversationList = styled.div`
-width: 95%;
-height: 100%
-display:flex;
-flex-direction:column;
-overflow-y:auto;
-&::-webkit-scrollbar {
-  width: 10px;
-}
+  width: 95%;
+  height: 100%;
+  display:flex;
+  flex-direction:column;
+  overflow-y:auto;
+  &::-webkit-scrollbar {
+    width: 10px;
+  }
 `;
 
 export const ConversationContainer = styled.div`
@@ -39,6 +55,19 @@ export const ConversationContainer = styled.div`
   display: flex;
   flex-direction: row;
   margin-bottom: 30px;
+`;
+
+export const ChattingContainer = styled.div`
+  width: 95%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const BackBtn = styled.button`
+  width: 100%;
+  height: 30px;
+  border-radius: 7px;
 `;
 
 export const PhotoArea = styled.div`
@@ -86,6 +115,16 @@ export const ReplyBtn = styled(Link)`
   color: #FF800B;
   font-weight: bold;
 `;
+
+// export const ReplyBtn = styled.button`
+//   margin-top: auto;
+//   margin-bottom: auto;
+//   margin-right: 5%;
+//   margin-left: auto;
+//   width: 80px;
+//   height: 30px;
+//   border-radius: 7px;
+// `;
 
 export const Column = styled.div`
   width:100%;

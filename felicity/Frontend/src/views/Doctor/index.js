@@ -32,7 +32,7 @@ function Doctor(props) {
     const [displayedData, setDisplay] = React.useState({})
     const [visible, setVisible] = useState(true)
 
-    const { startCall } = useContext(SocketContext);
+    const { startCall, send } = useContext(SocketContext);
 
     React.useEffect(() => {
         Axios.post(`${API_URL}/doctor_schedule`, { "doctor_id": jwt })

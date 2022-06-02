@@ -2,14 +2,11 @@ import { useState } from "react";
 import "./index.css";
 import Accordion from 'react-bootstrap/Accordion';
 import 'bootstrap/dist/css/bootstrap.css';
-import Chat from '../Chat';
+import Chat_Video from '../Chat_Video';
 import { CONVERSATION_DATA } from "./tempData";
 import { Patient } from "../RecentPost/styles";
 
-export const Infos = ({ context }) => {
-    const { myVideo, role, startCall, callUser, answerCall, userVideo, callAccepted, callEnded, stream, call, isClicked, text, getAudio, stopAudio, chatArr, send } = context;
-
-
+export const Infos = ({}) => {
     return (
         <Accordion defaultActiveKey="0">
             {CONVERSATION_DATA.map((data) => (
@@ -71,7 +68,7 @@ export const Infos = ({ context }) => {
                     <Accordion.Header>Chat</Accordion.Header>
                     <Accordion.Body>
                         <div className="chat">
-                            <Chat context={context}/>
+                            <Chat_Video/>
                         </div>
                     </Accordion.Body>
                 </Accordion.Item>

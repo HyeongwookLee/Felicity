@@ -1,78 +1,52 @@
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import { propTypes } from "react-bootstrap/esm/Image";
-import { Container, ConversationContainer, ConversationList, Header, IconArea, InfoArea, PhotoArea, Preview, ReplyBtn, Username, Column } from "./styles";
+import { Container, HeaderContainer, ConversationContainer, ConversationList, Header, IconArea, InfoArea, ChattingContainer, BackBtn, AddChatRoom, PhotoArea, Preview, ReplyBtn, Username, Column } from "./styles";
 import moment from "moment";
-const counter = 0;
+import Chat_Conv from "../Chat_Conv";
+import { SocketContext } from '../../API/video'
+
 const today = moment().format("MM-DD-YYYY");
+
 const Data = [
-  // {
-  //   id: 1,
-  //   img: "",
-  //   username: "Dr.Lee",
-  //   preview: "Hi! I need more\ninformations...",
-  // },
-  // {
-  //   id: 2,
-  //   img: "",
-  //   username: "Dr.Esra",
-  //   preview: "Can you change...",
-  // },
-  // {
-  //   id: 2,
-  //   img: "",
-  //   username: "Dr.Esra",
-  //   preview: "Can you change...",
-  // },
-  // {
-  //   id: 2,
-  //   img: "",
-  //   username: "Dr.Esra",
-  //   preview: "Can you change...",
-  // },
-  // {
-  //   id: 2,
-  //   img: "",
-  //   username: "Dr.Esra",
-  //   preview: "Can you change...",
-  // },
-  // {
-  //   id: 2,
-  //   img: "",
-  //   username: "Dr.Esra",
-  //   preview: "Can you change...",
-  // },
-  // {
-  //   id: 2,
-  //   img: "",
-  //   username: "Dr.Esra",
-  //   preview: "Can you change...",
-  // },
-  // {
-  //   id: 2,
-  //   img: "",
-  //   username: "Dr.Esra",
-  //   preview: "Can you change...",
-  // },
+  {
+    id: 1,
+    img: "",
+    username: "Dr.Lee",
+    preview: "Hi! I need more\ninformations...",
+  }
 ];
 
-export const Conversations = (props) => {
+export const Conversations = () => {
+  const [isChatting, setIsChatting] = useState(false);
+  const handleBtnClk = () => {
+    setIsChatting(!isChatting);
+  }
+
   return (
     <Container>
-      <Header>Conversations</Header>
+      <HeaderContainer>
+        <Header>Conversations</Header>
+        <AddChatRoom></AddChatRoom>
+      </HeaderContainer>
       <ConversationList>
-        {props.username && props.data.map((data) => (
+        {isChatting ?
+        <ChattingContainer>
+          <Chat_Conv/>
+          <BackBtn onClick={handleBtnClk}>Back</BackBtn>
+        </ChattingContainer>
+        :
+        Data.map((data) => (
           <ConversationContainer>
-            {counter += 1}
             <PhotoArea img = {data.img}/>
             <InfoArea>
               <Username>{data.username}</Username>
               <Preview>{data.preview}</Preview>
             </InfoArea>
             <IconArea>
-              <ReplyBtn to={`./Chatting`}>REPLY</ReplyBtn>
+              <ReplyBtn onClick={handleBtnClk}>REPLY</ReplyBtn>
             </IconArea>
           </ConversationContainer>
         ))}
-        { counter == 0 && <Column>There is no recent conversation</Column>}
       </ConversationList>
 
     </Container>

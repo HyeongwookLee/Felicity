@@ -19,6 +19,7 @@ let recordAudio;
 
 const ContextProvider = ({ children }) => {
     const [id, setId] = useState();
+    const [name, setName] = useState();
     const [role, setRole] = useState(true); // true: p, false: d
     const [userToCall, setUserToCall] = useState("");
 
@@ -45,9 +46,10 @@ const ContextProvider = ({ children }) => {
     const userVideo = useRef();
     const connectionRef = useRef();
 
-    function loginSessionStore(role, jwt) { //stores items in sessionStorage
+    function loginSessionStore(role, jwt, name) { //stores items in sessionStorage
         window.sessionStorage.setItem('role', JSON.stringify(role));
         window.sessionStorage.setItem('jwt', JSON.stringify(jwt));
+        window.sessionStorage.setItem('name', JSON.stringify(name));
     }
 
     const postPatientLogin = ({ email, password }) => async () => {
@@ -66,8 +68,9 @@ const ContextProvider = ({ children }) => {
                 else {
                     socket.emit("login", [response.data[0].user_id, true]);
                     if (response.data[0].user_id) {
-                        loginSessionStore(true, response.data[0].user_id)
+                        loginSessionStore(true, response.data[0].user_id, response.data[0].nickname);
                         setId(response.data[0].user_id);
+                        setName(response.data[0].nickname);
                     }
                 }
             });
@@ -91,8 +94,9 @@ const ContextProvider = ({ children }) => {
                 else {
                     socket.emit("login", [response.data[0].doctor_id, false]);
                     if (response.data[0].doctor_id) {
-                        loginSessionStore(false, response.data[0].doctor_id)
+                        loginSessionStore(false, response.data[0].doctor_id, response.data[0].nickname)
                         setId(response.data[0].doctor_id);
+                        setName(response.data[0].nickname);
                     }
                 }
             });
@@ -145,10 +149,10 @@ const ContextProvider = ({ children }) => {
         })
     }
 
-    const send = (n, m) => {
+    const send = (m) => {
         if (m !== "") {
-            socket.emit("chat", { userToCall: userToCall, name: n, msg: m, time: moment(new Date()).format("h:mm A") });
-            setChatArr([...chatArr, { name: n, msg: m, time: moment(new Date()).format("h:mm A") }]);
+            socket.emit("chat", { userToCall: userToCall, name: name, msg: m, time: moment(new Date()).format("h:mm A") });
+            setChatArr([...chatArr, { name: name, msg: m, time: moment(new Date()).format("h:mm A") }]);
         }
     }
 
@@ -327,6 +331,32 @@ const ContextProvider = ({ children }) => {
             console.log(result)
         })
     })
+
+    // const getDoctorConvList = (doctor_id) => async() => {
+    //     console.log("Sibal");
+    //     await Axios.get(`${API_URL}/doctor_conv`, {
+    //         doctor_id: doctor_id
+    //     }).then((response) => {
+    //         setConvId(response.data[0].convIds);
+    //         setPatientIds(response.data[0].patientIds);
+    //     })
+    // }
+
+    // const getPatientConvList = (patient_id) => async() => {
+    //     console.log("Sibal");
+    //     try {
+    //         await Axios.get(`${API_URL}/patient_conv`, {
+    //             patient_id: patient_id
+    //         }).then((response) => {
+    //             console.log(response);
+    //             setConvId(response.data[0].convIds);
+    //             setDoctorIds(response.data[0].doctorIds);
+    //         })
+    //     }
+    //     catch (e) {
+    //         console.log(e);
+    //     }
+    // }
 
     return (
         <SocketContext.Provider
